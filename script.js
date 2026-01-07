@@ -19,25 +19,40 @@ function checkInputs() {
   if (usernameValue === "") {
     setErrorFor(username, "O nome de usúario é obrigatório.");
   } else {
-    setSuccessFor(username, "O nome de usúario é valido")
+    setSuccessFor(username, "O nome de usúario é valido");
   }
 
   if (emailValue === "") {
+    setErrorFor(email, "O email é obrigatorio");
+  } else if (!checkEmail(emailValue)) {
     setErrorFor(email, "Insira um email válido.");
   } else {
-    setSuccessFor(email, "O email é valido")
+    setSuccessFor(email, "O email é valido");
   }
 
   if (passwordValue === "") {
-    setErrorFor(password, "Insira uma senha válida.");
+    setErrorFor(password, "A senha é obrigatorio");
+  } else if (passwordValue.length < 7) {
+    setErrorFor(password, "A senha deve ter o mínimo de 7 caracteres");
   } else {
-    setSuccessFor(password, "O nome de usúario é valido")
+    setSuccessFor(password, "O nome de usúario é valido");
   }
-  
+
   if (checkPasswordValue === "") {
-    setErrorFor(checkPassword, "As senhas não são iguais");
+    setErrorFor(checkPassword, "Campo obrigatório");
+  } else if (checkPasswordValue !== passwordValue) {
+    setErrorFor(checkPassword, "As senhas devem ser iguais.");
   } else {
-    setSuccessFor(checkPassword, "O nome de usúario é valido")
+    setSuccessFor(checkPassword, "O nome de usúario é valido");
+  }
+
+  const formCrontrols = form.querySelectorAll(".form-control");
+  const formIsValid = [...formCrontrols].every(formControl => {
+    return formControl.className === "form-control success"
+  })
+
+  if (formIsValid) {
+    console.log("O formulário está 100% válido!!")
   }
 }
 
@@ -52,4 +67,10 @@ function setSuccessFor(input, message) {
   const formControl = input.parentElement;
 
   formControl.className = "form-control success";
+}
+
+function checkEmail(email) {
+  return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+    email
+  );
 }
